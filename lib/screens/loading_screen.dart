@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:http/http.dart'  as http;
 import 'package:http/http.dart' as http;
-//import 'dart:convert';
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -16,6 +16,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     http.Response response = await http.get('http://api.openweathermap.org/data/2.5/forecast?q=Port%20Harcourt,NG&appid=100ef8029913a78ceeb3129acb20b497#');
     if (response.statusCode == 200) {
       String data = response.body;
+      
+     String cityName = jsonDecode(data)['city']['name'];
+     print(cityName);
+     String weatherDescription = jsonDecode(data)['list'][0]['weather'][0]['description'];
+     print(weatherDescription);
+     String weatherCondition = jsonDecode(data)['list'][0]['weather'][0]['main'];
+     print(weatherCondition);
+     
     } else {
       print(response.statusCode);
     }
@@ -24,33 +32,34 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String cityName;
     getData();
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey[900],
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(
-                    Icons.sort,
-                    size: 30,
-                    color: Colors.white70,
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.grey[900],
+            body: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Icon(
+                        Icons.sort,
+                        size: 30,
+                        color: Colors.white70,
+                      ),
+                      Icon(Icons.add, size: 30, color: Colors.white70),
+                    ],
                   ),
-                  Icon(Icons.add, size: 30, color: Colors.white70),
-                ],
-              ),
-            ),
-            SizedBox(height: 22.0),
-            Container(
-              width: 350,
-              height: 20,
-              //color: Colors.red,
-              child: Text(
-                'Port Harcourt',
+                ),
+                SizedBox(height: 22.0),
+                Container(
+                  width: 350,
+                  height: 20,
+                  //color: Colors.red,
+                  child: Text(
+                    '$cityName',
                 style: TextStyle(color: Colors.white, fontSize: 18.0),
                 textAlign: TextAlign.left,
               ),
